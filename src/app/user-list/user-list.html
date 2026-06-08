@@ -1,0 +1,58 @@
+<div class="shadow-xl shadow-[#033a007b] rounded-2xl py-2">
+    <h2 class="py-2 text-2xl text-green-900 border-b font-semibold text-center px-1">Bekorchi foydalanuvchilari</h2>
+
+    <table class="w-full">
+        <thead class="">
+            <tr class="bg-green-700 border-b">
+                <th class="pl-2 py-2 text-white text-left">ID</th>
+                <th class="pl-1 py-2 text-white text-left">Name</th>
+                <th class="pl-1 py-2 text-white text-left">Email</th>
+                <th class="pl-1 py-2 text-white text-left">Status</th>
+                <th class="pr-2 py-2 text-white text-right">
+                    <span (click)="crudService.open()" class="material-icons p-0.5 cursor-pointer bg-green-500 rounded-full">add</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (isLoading()) {
+                <tr>
+                    <td colspan="6" class="text-center text-lg font-semibold py-2">
+                        Yuklanmoqda...
+                    </td>
+                </tr>
+            }
+
+            @if(crudService.userData().length > 0){
+                @for (user of crudService.userData(); track user.id; let i = $index) {
+                <tr
+                    class=" border-b-green-500"
+                    [class.border-b]="crudService.userData().length > 1 "
+                    [class.border-b-none]="crudService.userData().length <= 1 || i === crudService.userData().length - 1"
+                >
+                    <td class="pl-2 py-2">{{user.id}}</td>
+                    <td class="pl-1 py-2">{{user.name}}</td>
+                    <td class="pl-1 py-2">{{user.email}}</td>
+                    <td class="pl-1 py-2"
+                        
+                        >
+                        <div class=" w-4 h-4 rounded-full"
+                        [class.bg-red-400] = !user.isActive
+                        [class.bg-green-400] = user.isActive
+                        >
+
+                        </div>    
+                    </td>
+                    <td class="pr-2 py-2 text-right">
+                        <span (click)="onUpdate(user, user.id)" class="material-icons text-orange-400 mr-3 cursor-pointer ">edit</span>
+                        <span (click)="onDelete(user.id)" class="material-icons text-red-400 cursor-pointer ">delete</span>
+                    </td>
+                </tr>
+            }
+            } @else {
+                <tr>
+                    <td colspan="6" class="text-center text-lg font-semibold py-2">Ma'lumot topilmadi!</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
