@@ -1,6 +1,6 @@
 # Angular CRUD App (Users Management)
 
-Simple Angular CRUD app
+Simple Angular CRUD app with fake Nest Server
 Tech Stack
 
 - Angular (Standalone Components)
