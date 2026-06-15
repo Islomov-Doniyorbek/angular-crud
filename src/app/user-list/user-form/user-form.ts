@@ -41,7 +41,7 @@ export class UserForm {
         next: (updUser) => {
           this.crudService.userList = this.crudService.userList.map(u=> u.id === updUser.id ? updUser : u)
 
-          setInterval(() => {
+          setTimeout(() => {
             this.isUpdate = false
             this.close.emit();
           }, 1000);
