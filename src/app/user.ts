@@ -4,3 +4,7 @@ export interface User {
     email: string
     isActive: boolean
 }
+export interface Resp {
+    data: User[]
+    totalCount: number
+}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { User } from '../user';
+import { Resp, User } from '../user';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,19 +9,19 @@ import { Observable } from 'rxjs';
 export class Crud {
   url = "http://localhost:3000"
   http = inject(HttpClient)
-  isOpen = signal(false)
-  userData = signal<User[]>([])
-  editUser = signal<User | null>(null)
+  isOpen = false
+  editUser: User | null = null
+  userList: User[] = []
 
   open(){
-    this.isOpen.set(true)
+    this.isOpen = true
   }
   close(){
-    this.isOpen.set(false)
+    this.isOpen = false
   }
-
+ 
   getUsers(){
-    return this.http.get<User[]>(`${this.url}/users`);
+    return this.http.get<Resp>(`${this.url}/users`);
   }
   postUser(user: User):Observable<User>{
     return this.http.post<User>(`${this.url}/users`, user)

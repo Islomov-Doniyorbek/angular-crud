@@ -1,7 +1,7 @@
 <div class="wrapper w-full flex justify-center">
   <div class="w-4/5 mt-5">
 
-    @if (crudService.isOpen()) {
+    @if (crudService.isOpen) {
       <div class="backdrop" (click)="crudService.close()"></div>
 
       <app-user-form

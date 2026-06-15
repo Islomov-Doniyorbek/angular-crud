@@ -1,10 +1,9 @@
 <div class="absolute top-0 left-0 w-full h-screen bg-[#0000008c]">
-    <div class="modal shadow-lg bg-white  rounded-2xl w-xl py-5 px-3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-    <div class="flex justify-between items-center py-2">
-        <span></span>
-        <h2 class="text-green-800 text-2xl font-semibold">Modal</h2>
-        <span class="material-icons cursor-pointer" (click)="onClose()">close</span>
+    <div class="modal shadow-lg bg-white  rounded-2xl w-xl py-2 pb-5 px-3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div class="flex justify-end items-center py-0.5">
+        <span class="material-icons text-lg cursor-pointer hover:text-red-600" (click)="onClose()">close</span>
     </div>
+    <h2 class="text-green-800 my-3 text-xl font-semibold text-center">{{crudService.editUser ? crudService.editUser.name : "Foydalanuvchi"}}ning ma'lumotlarini yangilash</h2>
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()" action="" class="flex w-full flex-col gap-y-2 items-center">
         <div class=" w-3/5 flex items-center flex-col">
             <label class="w-full" for="#">
@@ -24,7 +23,10 @@
             </label>
             <input class="py-2 px-1 rounded-lg border" formControlName="isActive" type="checkbox" >
         </div>
-        <div class=" w-3/5 mt-4 flex items-center flex-col">
+        @if (isUpdate) {
+            <p class="text-emerald-400 font-semibold text-sm">Ma'lumotlar yangilandi!</p>
+        }
+        <div class=" w-3/5 mt-2 flex items-center flex-col">
             <button [disabled]="userForm.invalid"
             class="w-full px-1 py-2 rounded-lg transition duration-500 hover:bg-emerald-300 hover:text-green-800 font-semibold text-white cursor-pointer border bg-emerald-600">Add + </button>
         </div>

@@ -1,5 +1,5 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { Crud } from '../service/crud.service';
+import { ChangeDetectorRef, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Crud } from './user.service';
 import { User } from '../user';
 
 interface ItemData {
@@ -7,55 +7,47 @@ interface ItemData {
   name: string;
   email: string;
   isActive: boolean;
-}
+} 
 @Component({
   selector: 'app-user-list',
   imports: [],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
-export class UserList {
+export class UserList implements OnInit {
 
+
+  private cdr = inject(ChangeDetectorRef)
   crudService = inject(Crud)
-
   
-  // userData = signal<User[]>([])
-  isLoading = signal(true)
-  constructor(){
-    effect(()=>{
-      this.crudService.getUsers().subscribe({
-        next: (data:any)=>{
-          console.log(data.data);
-          this.crudService.userData.set(data.data)
-          // this.userData.set(this.crudService.userData())
-          this.isLoading.update(v=>v=false)
-          // console.log(this.userData())
-        },error: (err)=>{
+  isLoading: boolean = true
+  
+  ngOnInit(): void {
+     this.crudService.getUsers().subscribe({
+      next: (res)=> {
+         this.crudService.userList = res.data
+         this.isLoading = false;
+         this.cdr.detectChanges()
+        },
+        error: (err)=>{
           console.log(err);
-          
+          this.isLoading = false;          
+          this.cdr.detectChanges()
         }
-      })
-    })
+     })
   }
 
   onUpdate(user:User, id: number){
-    this.crudService.editUser.set(user)
-    this.crudService.open()
-    
+    this.crudService.editUser = user
+    this.crudService.open()    
   }
 
   onDelete(id: number){
-    console.log(id);
-    
-    // if(confirm("Haqiqatan o'chirasizmi?"))
     this.crudService.delUser(id).subscribe({
-      next: data=>{
-        this.crudService.userData.update(user=>user.filter(c=>c.id !==id))
-        console.log(data)
+      next: () =>{
+        this.crudService.userList = [...this.crudService.userList.filter(c=>c.id !==id)]
       },
-      error: err=>console.log(err)
-      
-      
+      error: err=>console.log(err)      
     })
   }
 
